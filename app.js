@@ -3,15 +3,15 @@ const data = [
         title: "安全类",
         iconClass: "fa-solid fa-shield-halved safe-icon",
         plugins: [
-            { id: "smart-safe", name: "智能保险箱", icon: "fa-solid fa-vault", videoUrl: "https://example.com/video/smart-safe" },
-            { id: "behavior", name: "上网行为管理", icon: "fa-solid fa-user-shield", videoUrl: "https://example.com/video/behavior" }
+            { id: "smart-safe", name: "智能保险箱", icon: "fa-solid fa-vault", videoUrl: "video/智能保险箱.mp4" },
+            { id: "behavior", name: "上网行为管理", icon: "fa-solid fa-user-shield", videoUrl: "video/应用控制.mp4" }
         ]
     },
     {
         title: "加速类",
         iconClass: "fa-solid fa-bolt speed-icon",
         plugins: [
-            { id: "acceleration", name: "网络加速", icon: "fa-solid fa-rocket", videoUrl: "https://example.com/video/acceleration" },
+            { id: "acceleration", name: "网络加速", icon: "fa-solid fa-rocket", videoUrl: "video/网络加速.mp4" },
             { id: "uplink", name: "超级上行", icon: "fa-solid fa-cloud-arrow-up", videoUrl: "https://example.com/video/uplink" }
         ]
     },
