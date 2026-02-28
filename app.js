@@ -4,7 +4,7 @@ const data = [
         iconClass: "fa-solid fa-shield-halved safe-icon",
         plugins: [
             { id: "smart-safe", name: "智能保险箱", icon: "fa-solid fa-vault", videoUrl: "video/智能保险箱.mp4" },
-            { id: "behavior", name: "上网行为管理", icon: "fa-solid fa-user-shield", videoUrl: "video/应用控制.mp4" }
+            { id: "behavior", name: "应用控制", icon: "fa-solid fa-user-shield", videoUrl: "video/应用控制.mp4" }
         ]
     },
     {
