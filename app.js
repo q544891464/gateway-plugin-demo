@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Plugin Card
             const card = document.createElement('a');
             card.className = 'plugin-card';
-            card.href = plugin.videoUrl; // The link will navigate here
-            card.target = "_blank";      // Open videos in a new tab
+            card.href = `player.html?src=${encodeURIComponent(plugin.videoUrl)}&name=${encodeURIComponent(plugin.name)}`; // The link will navigate to player page
+            card.target = "_self";      // Open videos in same tab for better mobile experience
             card.dataset.id = plugin.id;
 
             card.innerHTML = `

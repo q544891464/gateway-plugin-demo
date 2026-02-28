@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>视频播放 - 增强网关插件演示</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-primary: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+            transition: opacity 0.3s ease;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            margin-right: 16px;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Video Container */
+        .video-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: #000;
+        }
+
+        video {
+            width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Hide UI when playing/idle */
+        body.playing-idle .header {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header" id="header">
+        <a href="javascript:history.back()" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1 class="video-title" id="video-title">视频播放</h1>
+    </header>
+
+    <div class="video-container" id="video-container">
+        <!-- Video element will be injected here -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoSrc = urlParams.get('src');
+            const videoName = urlParams.get('name');
+
+            if (videoName) {
+                document.getElementById('video-title').textContent = videoName;
+            }
+
+            const container = document.getElementById('video-container');
+
+            if (videoSrc) {
+                // Create video element
+                const videoElement = document.createElement('video');
+                videoElement.src = videoSrc;
+                videoElement.controls = true; // IMPORTANT: This enables native controls (play, pause, timeline/scrubbing, fullscreen)
+                videoElement.autoplay = true;
+                videoElement.playsInline = true; // Important for iOS
+
+                // Add to DOM
+                container.appendChild(videoElement);
+
+                // Auto-hide header when interacting with video or playing
+                let timeout;
+                const body = document.body;
+
+                const resetIdleTimer = () => {
+                    body.classList.remove('playing-idle');
+                    clearTimeout(timeout);
+                    if (!videoElement.paused) {
+                        timeout = setTimeout(() => {
+                            body.classList.add('playing-idle');
+                        }, 3000);
+                    }
+                };
+
+                videoElement.addEventListener('play', resetIdleTimer);
+                videoElement.addEventListener('pause', () => {
+                    body.classList.remove('playing-idle');
+                    clearTimeout(timeout);
+                });
+                videoElement.addEventListener('mousemove', resetIdleTimer);
+                videoElement.addEventListener('touchstart', resetIdleTimer);
+                document.addEventListener('mousemove', resetIdleTimer);
+                document.addEventListener('touchstart', resetIdleTimer);
+
+                // Keep controls visible for a second when metadata loaded so user knows they are there
+                videoElement.addEventListener('loadedmetadata', () => {
+                    resetIdleTimer();
+                });
+
+            } else {
+                container.innerHTML = '<p style="color: white; text-align: center;">未找到视频，请返回上一页。</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>
