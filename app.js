@@ -12,14 +12,14 @@ const data = [
         iconClass: "fa-solid fa-bolt speed-icon",
         plugins: [
             { id: "acceleration", name: "网络加速", icon: "fa-solid fa-rocket", videoUrl: "video/网络加速.mp4" },
-            { id: "uplink", name: "超级上行", icon: "fa-solid fa-cloud-arrow-up", videoUrl: "https://example.com/video/uplink" }
+            { id: "uplink", name: "超级上行", icon: "fa-solid fa-cloud-arrow-up", videoUrl: "video/超级上行.mp4" }
         ]
     },
     {
         title: "组网类",
         iconClass: "fa-solid fa-network-wired net-icon",
         plugins: [
-            { id: "wifi-opt", name: "一键Wifi优化", icon: "fa-solid fa-wifi", videoUrl: "https://example.com/video/wifi-opt" }
+            { id: "wifi-opt", name: "一键Wifi优化", icon: "fa-solid fa-wifi", videoUrl: "video/一键wifi优化.mp4" }
         ]
     }
 ];
