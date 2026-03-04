@@ -141,7 +141,6 @@
                 // Auto-hide header when interacting with video or playing
                 let timeout;
                 const body = document.body;
-                const interactionOptions = { passive: true };
 
                 const resetIdleTimer = () => {
                     body.classList.remove('playing-idle');
@@ -158,8 +157,6 @@
                     body.classList.remove('playing-idle');
                     clearTimeout(timeout);
                 });
-                videoElement.addEventListener('pointerdown', resetIdleTimer, interactionOptions);
-                videoElement.addEventListener('touchstart', resetIdleTimer, interactionOptions);
 
                 // Keep controls visible for a second when metadata loaded so user knows they are there
                 videoElement.addEventListener('loadedmetadata', () => {
