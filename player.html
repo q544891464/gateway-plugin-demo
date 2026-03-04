@@ -210,6 +210,7 @@
             const statusEl = document.getElementById('status');
 
             let isDragging = false;
+            let wasPlayingBeforeDrag = false;
 
             const setStatus = (msg) => {
                 statusEl.textContent = msg || '';
@@ -247,7 +248,15 @@
                 const ratio = Number(progress.value) / 1000;
                 const target = ratio * duration;
                 currentTimeEl.textContent = formatTime(target);
-                video.currentTime = target;
+                if (typeof video.fastSeek === 'function') {
+                    try {
+                        video.fastSeek(target);
+                    } catch (err) {
+                        video.currentTime = target;
+                    }
+                } else {
+                    video.currentTime = target;
+                }
             };
 
             if (videoName) {
@@ -265,7 +274,7 @@
 
             setStatus('正在加载视频...');
             video.src = videoSrc;
-            video.preload = 'metadata';
+            video.preload = 'auto';
             video.load();
 
             video.addEventListener('loadedmetadata', () => {
@@ -303,16 +312,68 @@
 
             progress.addEventListener('pointerdown', () => {
                 isDragging = true;
+                wasPlayingBeforeDrag = !video.paused;
+                if (wasPlayingBeforeDrag) {
+                    video.pause();
+                }
             });
+            progress.addEventListener('mousedown', () => {
+                if (isDragging) return;
+                isDragging = true;
+                wasPlayingBeforeDrag = !video.paused;
+                if (wasPlayingBeforeDrag) {
+                    video.pause();
+                }
+            });
+            progress.addEventListener('touchstart', () => {
+                if (isDragging) return;
+                isDragging = true;
+                wasPlayingBeforeDrag = !video.paused;
+                if (wasPlayingBeforeDrag) {
+                    video.pause();
+                }
+            }, { passive: true });
             progress.addEventListener('input', () => {
-                seekBySlider();
+                const duration = video.duration || 0;
+                if (!duration) return;
+                const ratio = Number(progress.value) / 1000;
+                currentTimeEl.textContent = formatTime(ratio * duration);
             });
             progress.addEventListener('change', () => {
                 seekBySlider();
                 isDragging = false;
+                if (wasPlayingBeforeDrag) {
+                    video.play().catch(() => {});
+                }
+                wasPlayingBeforeDrag = false;
             });
             progress.addEventListener('pointerup', () => {
                 isDragging = false;
+                if (wasPlayingBeforeDrag && video.paused) {
+                    video.play().catch(() => {});
+                }
+                wasPlayingBeforeDrag = false;
+            });
+            progress.addEventListener('mouseup', () => {
+                isDragging = false;
+                if (wasPlayingBeforeDrag && video.paused) {
+                    video.play().catch(() => {});
+                }
+                wasPlayingBeforeDrag = false;
+            });
+            progress.addEventListener('touchend', () => {
+                isDragging = false;
+                if (wasPlayingBeforeDrag && video.paused) {
+                    video.play().catch(() => {});
+                }
+                wasPlayingBeforeDrag = false;
+            });
+            progress.addEventListener('touchcancel', () => {
+                isDragging = false;
+                if (wasPlayingBeforeDrag && video.paused) {
+                    video.play().catch(() => {});
+                }
+                wasPlayingBeforeDrag = false;
             });
 
             fullscreenBtn.addEventListener('click', async () => {
