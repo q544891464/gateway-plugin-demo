@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>视频播放 - 增强网关插件演示</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>视频播放</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #000000;
-            --text-primary: #f8fafc;
+            --bg: #000;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --panel: rgba(15, 23, 42, 0.75);
+            --accent: #3b82f6;
         }
 
         * {
@@ -21,93 +22,162 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            height: calc(var(--vh, 1vh) * 100);
+            background: var(--bg);
+            color: var(--text);
             width: 100vw;
-            display: flex;
-            flex-direction: column;
+            height: calc(var(--vh, 1vh) * 100);
             overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Header */
-        .header {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .player-page {
             width: 100%;
-            padding: 16px;
+            height: 100%;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            background: #000;
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
             display: flex;
             align-items: center;
-            z-index: 10;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
-            transition: opacity 0.3s ease;
+            gap: 12px;
+            padding: 12px 14px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
         }
 
         .back-btn {
-            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
             text-decoration: none;
-            font-size: 20px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            margin-right: 16px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(6px);
         }
 
         .video-title {
-            font-size: 16px;
-            font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+            font-size: 15px;
+            line-height: 1.3;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* Video Container */
-        .video-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            background-color: #000;
+        .video-wrap {
             min-height: 0;
+            display: grid;
+            place-items: center;
+            background: #000;
+            padding: 0 0 8px;
         }
 
         video {
             width: 100%;
-            height: auto;
+            height: 100%;
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            background: #000;
         }
 
-        /* Hide UI when playing/idle */
-        body.playing-idle .header {
-            opacity: 0;
-            pointer-events: none;
+        .controls {
+            position: relative;
+            z-index: 10;
+            padding: 12px 12px calc(env(safe-area-inset-bottom, 0px) + 12px);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.35));
+        }
+
+        .progress-row {
+            display: grid;
+            grid-template-columns: 44px 1fr 44px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .time {
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .progress {
+            width: 100%;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: var(--panel);
+            cursor: pointer;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .status {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 8px;
+            min-height: 18px;
         }
     </style>
 </head>
-
 <body>
-    <header class="header" id="header">
-        <a href="javascript:history.back()" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-        <h1 class="video-title" id="video-title">视频播放</h1>
-    </header>
+    <div class="player-page">
+        <header class="header">
+            <a href="javascript:history.back()" class="back-btn" aria-label="返回">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h1 class="video-title" id="video-title">视频播放</h1>
+        </header>
 
-    <div class="video-container" id="video-container">
-        <!-- Video element will be injected here -->
+        <div class="video-wrap" id="video-wrap">
+            <video id="video" playsinline webkit-playsinline preload="auto"></video>
+        </div>
+
+        <section class="controls">
+            <div class="progress-row">
+                <div class="time" id="current-time">00:00</div>
+                <input id="progress" class="progress" type="range" min="0" max="1000" value="0" step="1" />
+                <div class="time" id="duration-time">00:00</div>
+            </div>
+            <div class="buttons">
+                <button id="play-btn" class="btn" type="button" aria-label="播放/暂停">
+                    <i class="fa-solid fa-play"></i>
+                </button>
+                <button id="fullscreen-btn" class="btn" type="button" aria-label="全屏">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+            <div id="status" class="status"></div>
+        </section>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const setViewportHeight = () => {
                 const vh = window.innerHeight * 0.01;
                 document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -116,58 +186,150 @@
             window.addEventListener('resize', setViewportHeight);
             window.addEventListener('orientationchange', setViewportHeight);
 
-            // Get URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const videoSrc = urlParams.get('src');
-            const videoName = urlParams.get('name');
+            const params = new URLSearchParams(window.location.search);
+            const videoSrc = params.get('src');
+            const videoName = params.get('name');
+
+            const video = document.getElementById('video');
+            const videoWrap = document.getElementById('video-wrap');
+            const titleEl = document.getElementById('video-title');
+            const playBtn = document.getElementById('play-btn');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const progress = document.getElementById('progress');
+            const currentTimeEl = document.getElementById('current-time');
+            const durationTimeEl = document.getElementById('duration-time');
+            const statusEl = document.getElementById('status');
+
+            let isDragging = false;
+            let objectUrl = null;
+
+            const setStatus = (msg) => {
+                statusEl.textContent = msg || '';
+            };
+
+            const formatTime = (seconds) => {
+                if (!Number.isFinite(seconds) || seconds < 0) return '00:00';
+                const s = Math.floor(seconds);
+                const hh = Math.floor(s / 3600);
+                const mm = Math.floor((s % 3600) / 60);
+                const ss = s % 60;
+                if (hh > 0) {
+                    return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+                }
+                return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+            };
+
+            const updatePlayIcon = () => {
+                playBtn.innerHTML = video.paused
+                    ? '<i class="fa-solid fa-play"></i>'
+                    : '<i class="fa-solid fa-pause"></i>';
+            };
+
+            const updateProgressFromVideo = () => {
+                const duration = video.duration || 0;
+                if (!duration || isDragging) return;
+                const v = Math.min(1000, Math.max(0, Math.round((video.currentTime / duration) * 1000)));
+                progress.value = String(v);
+                currentTimeEl.textContent = formatTime(video.currentTime);
+            };
+
+            const seekBySlider = () => {
+                const duration = video.duration || 0;
+                if (!duration) return;
+                const ratio = Number(progress.value) / 1000;
+                const target = ratio * duration;
+                currentTimeEl.textContent = formatTime(target);
+                video.currentTime = target;
+            };
 
             if (videoName) {
-                document.getElementById('video-title').textContent = videoName;
+                titleEl.textContent = videoName;
             }
 
-            const container = document.getElementById('video-container');
+            if (!videoSrc) {
+                videoWrap.innerHTML = '<p style="color:#cbd5e1;text-align:center;padding:0 16px;">未找到视频源，请返回上一页重试。</p>';
+                setStatus('视频地址为空');
+                playBtn.disabled = true;
+                progress.disabled = true;
+                fullscreenBtn.disabled = true;
+                return;
+            }
 
-            if (videoSrc) {
-                // Create video element
-                const videoElement = document.createElement('video');
-                videoElement.src = videoSrc;
-                videoElement.controls = true; // IMPORTANT: This enables native controls (play, pause, timeline/scrubbing, fullscreen)
-                videoElement.autoplay = true;
-                videoElement.playsInline = true; // Important for iOS
+            try {
+                setStatus('正在加载视频...');
+                const response = await fetch(videoSrc, { cache: 'no-store' });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const blob = await response.blob();
+                objectUrl = URL.createObjectURL(blob);
+                video.src = objectUrl;
+                setStatus('');
+            } catch (err) {
+                video.src = videoSrc;
+                setStatus('已使用直接播放模式');
+            }
 
-                // Add to DOM
-                container.appendChild(videoElement);
+            video.addEventListener('loadedmetadata', () => {
+                durationTimeEl.textContent = formatTime(video.duration);
+                currentTimeEl.textContent = formatTime(0);
+                progress.value = '0';
+                setStatus('');
+            });
 
-                // Auto-hide header when interacting with video or playing
-                let timeout;
-                const body = document.body;
+            video.addEventListener('timeupdate', updateProgressFromVideo);
+            video.addEventListener('play', updatePlayIcon);
+            video.addEventListener('pause', updatePlayIcon);
+            video.addEventListener('ended', updatePlayIcon);
+            video.addEventListener('error', () => {
+                setStatus('视频加载失败，请返回重试');
+            });
 
-                const resetIdleTimer = () => {
-                    body.classList.remove('playing-idle');
-                    clearTimeout(timeout);
-                    if (!videoElement.paused) {
-                        timeout = setTimeout(() => {
-                            body.classList.add('playing-idle');
-                        }, 3000);
+            playBtn.addEventListener('click', async () => {
+                try {
+                    if (video.paused) {
+                        await video.play();
+                    } else {
+                        video.pause();
                     }
-                };
+                } catch (err) {
+                    setStatus('播放被浏览器拦截，请再点一次播放');
+                }
+                updatePlayIcon();
+            });
 
-                videoElement.addEventListener('play', resetIdleTimer);
-                videoElement.addEventListener('pause', () => {
-                    body.classList.remove('playing-idle');
-                    clearTimeout(timeout);
-                });
+            progress.addEventListener('pointerdown', () => {
+                isDragging = true;
+            });
+            progress.addEventListener('input', () => {
+                seekBySlider();
+            });
+            progress.addEventListener('change', () => {
+                seekBySlider();
+                isDragging = false;
+            });
+            progress.addEventListener('pointerup', () => {
+                isDragging = false;
+            });
 
-                // Keep controls visible for a second when metadata loaded so user knows they are there
-                videoElement.addEventListener('loadedmetadata', () => {
-                    resetIdleTimer();
-                });
+            fullscreenBtn.addEventListener('click', async () => {
+                try {
+                    if (document.fullscreenElement) {
+                        await document.exitFullscreen();
+                        return;
+                    }
+                    if (videoWrap.requestFullscreen) {
+                        await videoWrap.requestFullscreen();
+                    } else if (video.webkitEnterFullscreen) {
+                        video.webkitEnterFullscreen();
+                    }
+                } catch (err) {
+                    setStatus('当前环境不支持全屏');
+                }
+            });
 
-            } else {
-                container.innerHTML = '<p style="color: white; text-align: center;">未找到视频，请返回上一页。</p>';
-            }
+            window.addEventListener('beforeunload', () => {
+                if (objectUrl) URL.revokeObjectURL(objectUrl);
+            });
         });
     </script>
 </body>
-
 </html>
