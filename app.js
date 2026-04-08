@@ -3,8 +3,8 @@ const data = [
         title: "安全类",
         iconClass: "fa-solid fa-shield-halved safe-icon",
         plugins: [
-            { id: "smart-safe", name: "智能保险箱", icon: "fa-solid fa-vault", videoUrl: "video/智能保险箱.mp4" },
-            { id: "behavior", name: "应用控制", icon: "fa-solid fa-user-shield", videoUrl: "video/应用控制.mp4" },
+            { id: "smart-safe", name: "智能保险箱", icon: "fa-solid fa-vault", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/3GIW7i2x_vip.mp4" },
+            { id: "behavior", name: "应用控制", icon: "fa-solid fa-user-shield", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/0ANSmXcO_vip.mp4" },
             { id: "safe-cat", name: "安全猫防护版", icon: "fa-solid fa-cat", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/JGW28SCg_vip.mp4" }
         ]
     },
@@ -12,7 +12,7 @@ const data = [
         title: "营销类",
         iconClass: "fa-solid fa-bullhorn marketing-icon",
         plugins: [
-            { id: "web-behavior", name: "上网行为管理", icon: "fa-solid fa-chart-line", videoUrl: "" }
+            { id: "web-behavior", name: "上网行为管理", icon: "fa-solid fa-chart-line", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/eX12svbd_vip.mp4" }
         ]
     },
     {
