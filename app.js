@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
             card.dataset.id = plugin.id;
 
             if (hasVideo) {
-                card.href = `player.html?src=${encodeURIComponent(plugin.videoUrl)}&name=${encodeURIComponent(plugin.name)}`;
+                card.href = plugin.videoUrl;
                 card.target = "_self";
             } else {
                 card.setAttribute("aria-disabled", "true");
