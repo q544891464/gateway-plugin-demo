@@ -36,7 +36,7 @@ const data = [
         plugins: [
             { id: "deepseek", name: "DeepSeek", icon: "fa-solid fa-brain", videoUrl: "https://static2.51gonggui.com/lqpXi0a-3XZ3lfJBFgnWen18YWz9#.mp4" },
             { id: "video-ai", name: "视频AI", icon: "fa-solid fa-clapperboard", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/pvY5XDJA_vip.mp4" },
-            { id: "security-brain", name: "安全大脑", icon: "fa-solid fa-shield-heart", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/5VfIW5ch_vip.mp4" }
+            { id: "security-brain", name: "安全大脑", icon: "fa-solid fa-shield-heart", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/sfUFnGnX_vip.mp4" }
         ]
     }
 ];
