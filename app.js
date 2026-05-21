@@ -3,40 +3,40 @@ const data = [
         title: "安全类",
         iconClass: "fa-solid fa-shield-halved safe-icon",
         plugins: [
-            { id: "smart-safe", name: "智能保险箱", icon: "fa-solid fa-vault", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/3GIW7i2x_vip.mp4" },
-            { id: "behavior", name: "应用控制", icon: "fa-solid fa-user-shield", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/0ANSmXcO_vip.mp4" },
-            { id: "safe-cat", name: "安全猫防护版", icon: "fa-solid fa-cat", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/JGW28SCg_vip.mp4" }
+            { id: "smart-safe", name: "智能保险箱", icon: "fa-solid fa-vault", videoUrl: "http://182.92.153.82:8080/videos/zhinengbaoxianxiang.mp4" },
+            { id: "behavior", name: "应用控制", icon: "fa-solid fa-user-shield", videoUrl: "http://182.92.153.82:8080/videos/yingyongkongzhi.mp4" },
+            { id: "safe-cat", name: "安全猫防护版", icon: "fa-solid fa-cat", videoUrl: "http://182.92.153.82:8080/videos/anquanmao.mp4" }
         ]
     },
     {
         title: "营销类",
         iconClass: "fa-solid fa-bullhorn marketing-icon",
         plugins: [
-            { id: "web-behavior", name: "上网行为管理", icon: "fa-solid fa-chart-line", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/eX12svbd_vip.mp4" }
+            { id: "web-behavior", name: "上网行为管理", icon: "fa-solid fa-chart-line", videoUrl: "http://182.92.153.82:8080/videos/shangwangxingwei.mp4" }
         ]
     },
     {
         title: "加速类",
         iconClass: "fa-solid fa-bolt speed-icon",
         plugins: [
-            { id: "acceleration", name: "网络加速", icon: "fa-solid fa-rocket", videoUrl: "https://file.ljcdn.com/psd-sinan-file/prod/appeal_evidence/BABF16B64C5C4BD9BBA65B765D6C617B/qdqqd.mp4" },
-            { id: "uplink", name: "超级上行", icon: "fa-solid fa-cloud-arrow-up", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/XSu87ooK_vip.mp4" }
+            { id: "acceleration", name: "网络加速", icon: "fa-solid fa-rocket", videoUrl: "http://182.92.153.82:8080/videos/wangluojiasu.mp4" },
+            { id: "uplink", name: "超级上行", icon: "fa-solid fa-cloud-arrow-up", videoUrl: "http://182.92.153.82:8080/videos/chaojishangxing.mp4" }
         ]
     },
     {
         title: "组网类",
         iconClass: "fa-solid fa-network-wired net-icon",
         plugins: [
-            { id: "wifi-opt", name: "一键WiFi优化", icon: "fa-solid fa-wifi", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/qebSD0Tt_vip.mp4" }
+            { id: "wifi-opt", name: "一键WiFi优化", icon: "fa-solid fa-wifi", videoUrl: "http://182.92.153.82:8080/videos/wifiyouhua.mp4" }
         ]
     },
     {
         title: "高阶网关应用",
         iconClass: "fa-solid fa-layer-group advanced-icon",
         plugins: [
-            { id: "deepseek", name: "DeepSeek", icon: "fa-solid fa-brain", videoUrl: "https://static2.51gonggui.com/lqpXi0a-3XZ3lfJBFgnWen18YWz9#.mp4" },
-            { id: "video-ai", name: "视频AI", icon: "fa-solid fa-clapperboard", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/pvY5XDJA_vip.mp4" },
-            { id: "security-brain", name: "安全大脑", icon: "fa-solid fa-shield-heart", videoUrl: "https://file.icve.com.cn/file_doc/qdqqd/sfUFnGnX_vip.mp4" }
+            { id: "deepseek", name: "DeepSeek", icon: "fa-solid fa-brain", videoUrl: "http://182.92.153.82:8080/videos/deepseek.mp4" },
+            { id: "video-ai", name: "视频AI", icon: "fa-solid fa-clapperboard", videoUrl: "http://182.92.153.82:8080/videos/shipinjiankong.mp4" },
+            { id: "security-brain", name: "安全大脑", icon: "fa-solid fa-shield-heart", videoUrl: "http://182.92.153.82:8080/videos/anquandanao.mp4" }
         ]
     }
 ];
